@@ -31,18 +31,24 @@ while True:
 
         add_content = raw_command[2]
         with open(f"{file_name}", "a") as f:
-            f.write(add_content)
+            f.write(f"{add_content}")
+            f.write(f"\n")
 
     elif command == "Replace":
 
         if (os.path.exists(f"{file_name}")):
             if raw_command[2] != raw_command[3]:
-                with open(f"{file_name}", "w+") as f:
+
+                with open(f"{file_name}", "r+") as f:
                     lines = []
-                    for line in f.readlines():
+                    lines_read = f.readlines()
+                    for line in lines_read:
+                        print(f"line givven is {line}")
                         while raw_command[2] in line:
-                            lines.append(line.replace(raw_command[2], raw_command[3]))
-                    print(lines)
+                            line = line.replace(raw_command[2], raw_command[3])
+                        lines.append(line)
+
+                with open(f"{file_name}", "w") as f:
                     f.writelines(lines)                    
 
         else:
@@ -50,6 +56,8 @@ while True:
 
         
     elif raw_command[0] == "Delete":
-        pass
+        if (os.path.exists(f"{file_name}")):
+            os.remove(f"{file_name}")
+        else:
+            print("An error occurred")
 
-# to be continued
